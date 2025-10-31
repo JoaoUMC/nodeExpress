@@ -1,16 +1,20 @@
-# Use the official Node.js image as the base image
+# Use a imagem oficial do Node
 FROM node:18
 
-#Set the working directory in the container
-WORKDIR /main
+# Diretório de trabalho dentro do container
+WORKDIR /app
 
-EXPOSE 3000
+# Copia apenas os manifests primeiro (melhora o cache de build)
+COPY package*.json ./
 
-# Copy the application files into the working directory
-COPY ./main
-
-# Install the application dependencies
+# Instala as dependências
 RUN npm install
 
-# Define the entry point for the container
-CMD ["npm","start"]
+# Agora copia o restante do código
+COPY . .
+
+# Expõe a porta que sua app usa
+EXPOSE 3000
+
+# Comando de inicialização
+CMD ["npm", "start"]
